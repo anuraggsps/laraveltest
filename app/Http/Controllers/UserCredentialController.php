@@ -29,7 +29,7 @@ class UserCredentialController extends Controller
  
         $token = $user->createToken('TutsForWeb')->accessToken;
  
-        return response()->json(['token' => $token], 200);
+        return response()->json(['success' => true,'message' => 'Thanks For Registarion','token' => $token], 200);
     }
  
     /**
@@ -47,7 +47,9 @@ class UserCredentialController extends Controller
  
         if (auth()->attempt($credentials)) {
             $token = auth()->user()->createToken('TutsForWeb')->accessToken;
-            return response()->json(['token' => $token], 200);
+            
+            
+            return response()->json(['success' => true,'message' => 'Login succesfully','token' => $token], 200);
         } else {
             return response()->json(['error' => 'UnAuthorised'], 401);
         }
