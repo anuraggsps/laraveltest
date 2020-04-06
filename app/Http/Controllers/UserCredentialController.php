@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
  
 use App\User;
 use Illuminate\Http\Request;
- 
+use Validator;
+
 class UserCredentialController extends Controller
 {
     /**
@@ -15,12 +16,18 @@ class UserCredentialController extends Controller
      */
     public function register(Request $request)
     {
-        $this->validate($request, [
+
+        
+        $validator = Validator::make($request->all(), [ 
             'name' => 'required|min:3',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
- 
+        
+        if ($validator->fails()) { 
+            return response()->json(['error'=>$validator->errors()], 401);            
+        }
+        
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
